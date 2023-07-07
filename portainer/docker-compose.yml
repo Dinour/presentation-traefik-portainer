@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  portainer:
+    image: portainer/portainer-ce:2.18.3-alpine
+    networks:
+      techcare:
+        aliases:
+          - techcare_portainer
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    labels:
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
+      traefik.http.routers.portainer.rule: "Host(`portainer.localhost`)"
+      traefik.docker.network: "techcare"
+      traefik.enable: true
+
+
+networks:
+  techcare:
+    external: true

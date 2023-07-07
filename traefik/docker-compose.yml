@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+
+  traefik:
+    image: traefik:2.10
+    networks:
+      - techcare
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "3306:3306"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml
+    restart:
+      always
+
+networks:
+  techcare:
+    external: true
